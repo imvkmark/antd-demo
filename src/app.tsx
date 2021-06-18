@@ -4,11 +4,10 @@ import { notification } from 'antd';
 import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
 import { history, Link } from 'umi';
 import RightContent from '@/components/RightContent';
-import Footer from '@/components/Footer';
-import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import { requestHeaderInterceptor } from '@/utils/utils';
 import { apiAuthAccess } from '@/services/poppy/system';
+import { ApiPoppy } from '@/services/poppy/typings';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -23,8 +22,8 @@ export const initialStateConfig = {
  * */
 export async function getInitialState(): Promise<{
     settings?: Partial<LayoutSettings>;
-    currentUser?: API.CurrentUser;
-    fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
+    currentUser?: ApiPoppy.AuthAccessUser;
+    fetchUserInfo?: () => Promise<ApiPoppy.AuthAccessUser | undefined>;
 }> {
     const fetchUserInfo = async () => {
         try {
@@ -36,7 +35,7 @@ export async function getInitialState(): Promise<{
     };
     // 如果是登录页面，不执行
     if (history.location.pathname !== loginPath) {
-        const currentUser = await fetchUserInfo();
+        const { data: currentUser } = await fetchUserInfo();
         return {
             fetchUserInfo,
             currentUser,
@@ -98,9 +97,9 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
         rightContentRender: () => <RightContent/>,
         disableContentMargin: false,
         waterMarkProps: {
-            content: initialState?.currentUser?.name
+            content: initialState?.currentUser?.username
         },
-        footerRender: () => <Footer/>,
+        footerRender: () => <></>,
         onPageChange: () => {
             const { location } = history;
             // 如果没有登录，重定向到 login

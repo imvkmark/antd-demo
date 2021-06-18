@@ -16,6 +16,7 @@ import styles from './index.less';
 import { apiAuthLogin } from '@/services/poppy/system';
 import { STATUS_OK, storageKey } from '@/utils/conf';
 import { localStore } from '@/utils/utils';
+import { ApiPoppy } from '@/services/poppy/typings';
 
 const LoginMessage: React.FC<{
     content: string;
@@ -44,13 +45,12 @@ const goto = () => {
 
 const Login: React.FC = () => {
     const [submitting, setSubmitting] = useState(false);
-    const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
+    const [userLoginState] = useState<API.LoginResult>({});
     const [type, setType] = useState<string>('account');
     const { initialState, setInitialState } = useModel('@@initialState');
 
     const fetchUserInfo = async () => {
         const userInfo = await initialState?.fetchUserInfo?.();
-
         if (userInfo) {
             setInitialState({ ...initialState, currentUser: userInfo });
         }
@@ -61,7 +61,7 @@ const Login: React.FC = () => {
 
         try {
             // 登录
-            const { status, message: msg, data } = await apiAuthLogin({ ...values });
+            let { status, message: msg, data } = await apiAuthLogin({ ...values });
 
             if (status !== STATUS_OK) {
                 message.error(msg);
@@ -71,10 +71,6 @@ const Login: React.FC = () => {
             message.success(msg);
             await fetchUserInfo();
             goto();
-            return;
-
-            // todo 设置用户权限以及状态[和管理员有关系]
-            setUserLoginState(msg);
         } catch (error) {
             message.error('登录失败，请重试！');
         }
@@ -82,7 +78,7 @@ const Login: React.FC = () => {
         setSubmitting(false);
     };
 
-    const { status, type: loginType } = userLoginState;
+    const { type: loginType } = userLoginState;
     return (
         <div className={styles.container}>
             <div className={styles.content}>

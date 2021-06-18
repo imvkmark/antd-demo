@@ -1,4 +1,5 @@
 import { request } from 'umi';
+import { ApiPoppy } from '@/services/poppy/typings';
 
 /**
  * 登录
