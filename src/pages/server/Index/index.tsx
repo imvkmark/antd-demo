@@ -1,7 +1,5 @@
 import React from 'react';
 import ProLayout, { PageContainer } from '@ant-design/pro-layout';
-import { Avatar } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
 import menu from './menu';
 
 export default (): React.ReactNode => {
@@ -18,11 +16,7 @@ export default (): React.ReactNode => {
             style={{
                 height: '400px'
             }}
-            rightContentRender={() => (
-                <div>
-                    <Avatar shape="square" size="small" icon={<UserOutlined/>}/>
-                </div>
-            )}
+            headerRender={false}
             menuHeaderRender={false}
         >
             <PageContainer content="欢迎使用">
