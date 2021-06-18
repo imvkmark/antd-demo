@@ -10,21 +10,28 @@ export default {
         '/api/': {
             target: 'https://preview.pro.ant.design',
             changeOrigin: true,
-            pathRewrite: {'^': ''}
+            pathRewrite: { '^': '' }
+        }
+    },
+    local: {
+        '/api': {
+            target: 'http://poppy.duoli.com',
+            changeOrigin: true,
+            pathRewrite: { '^': '' }
         }
     },
     test: {
-        '/api/': {
-            target: 'https://preview.pro.ant.design',
+        '/api': {
+            target: 'http://poppy.duoli.com',
             changeOrigin: true,
-            pathRewrite: {'^': ''}
+            pathRewrite: { '^': '' }
         }
     },
     pre: {
         '/api/': {
             target: 'your pre url',
             changeOrigin: true,
-            pathRewrite: {'^': ''}
+            pathRewrite: { '^': '' }
         }
     }
 };
